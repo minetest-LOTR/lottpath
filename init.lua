@@ -1,44 +1,62 @@
 -- Parameters
 
+-- Code taken from paramat's pathv7, modified (very slightly) by Amaz
+-- so that it works with Minetest: Third Age.
+
+-- Includes quite a few bugs with MTTA, especially in areas with mountains.
+-- There is a slight possibility that this will be included in some form
+-- with a future release of MTTA.
+
 local HSAMP = 0.025 -- Height select amplitude.
 					-- Controls maximum steepness of paths.
 local DEBUG = false -- Print generation time
 
 -- Mapgen v7 noises
+-- LOTT: base = ter, alt = flat
 
 -- 2D noise for base terrain
 
 local np_base = {
-	offset = 4,
-	scale = 70,
-	spread = {x = 600, y = 600, z = 600},
-	seed = 82341,
-	octaves = 5,
-	persist = 0.6
+	offset = 0,
+	scale = 1,
+	spread = {x=256, y=256, z=256},
+	seed = 543213,
+	octaves = 4,
+	persist = 0.7
 }
 
 -- 2D noise for alt terrain
 
 local np_alt = {
-	offset = 4,
-	scale = 25,
-	spread = {x = 600, y = 600, z = 600},
-	seed = 5934,
-	octaves = 5,
-	persist = 0.6
+	offset = 0,
+	scale = 1,
+	spread = {x=1024, y=1024, z=1024},
+	seed = 543213,
+	octaves = 1,
+	persist = 0.5
 }
 
 -- 2D noise for height select
 
 local np_select = {
-	offset = -8,
-	scale = 16,
-	spread = {x = 500, y = 500, z = 500},
-	seed = 4213,
-	octaves = 4, -- default 6
-	persist = 0.3 -- default 0.7
+	offset = 0,
+	scale = 1,
+	spread = {x=512, y=512, z=512},
+	seed = 9130,
+	octaves = 3,
+	persist = 0.5
 }
 
+local np_select2 = {
+	offset = 0,
+	scale = 1,
+	spread = {x=512, y=512, z=512},
+	seed = -5500,
+	octaves = 3,
+	persist = 0.5
+}
+
+local border_amp = 128
 -- Mod noises
 
 -- 2D noise for patha
@@ -99,41 +117,41 @@ local np_column = {
 
 -- Do files
 
-dofile(minetest.get_modpath("pathv7") .. "/nodes.lua")
+dofile(minetest.get_modpath("lottpath") .. "/nodes.lua")
 
 
 -- Constants
-
-local c_wood    = minetest.get_content_id("pathv7:junglewood")
-local c_column  = minetest.get_content_id("pathv7:bridgewood")
-local c_stairn  = minetest.get_content_id("pathv7:stairn")
-local c_stairs  = minetest.get_content_id("pathv7:stairs")
-local c_staire  = minetest.get_content_id("pathv7:staire")
-local c_stairw  = minetest.get_content_id("pathv7:stairw")
-local c_stairne = minetest.get_content_id("pathv7:stairne")
-local c_stairnw = minetest.get_content_id("pathv7:stairnw")
-local c_stairse = minetest.get_content_id("pathv7:stairse")
-local c_stairsw = minetest.get_content_id("pathv7:stairsw")
+-- These would be the stairs found in nodes.lua, but I found that more ugly... - Amaz
+local c_wood    = minetest.get_content_id("lottitems:sandstone_brick")
+local c_column  = minetest.get_content_id("lottitems:sandstone_block")
+local c_stairn  = minetest.get_content_id("lottitems:sandstone_brick")
+local c_stairs  = minetest.get_content_id("lottitems:sandstone_brick")
+local c_staire  = minetest.get_content_id("lottitems:sandstone_brick")
+local c_stairw  = minetest.get_content_id("lottitems:sandstone_brick")
+local c_stairne = minetest.get_content_id("lottitems:sandstone_brick")
+local c_stairnw = minetest.get_content_id("lottitems:sandstone_brick")
+local c_stairse = minetest.get_content_id("lottitems:sandstone_brick")
+local c_stairsw = minetest.get_content_id("lottitems:sandstone_brick")
 
 local c_air          = minetest.CONTENT_AIR
 local c_ignore       = minetest.CONTENT_IGNORE
-local c_stone        = minetest.get_content_id("default:stone")
-local c_sastone      = minetest.get_content_id("default:sandstone")
-local c_destone      = minetest.get_content_id("default:desert_stone")
-local c_ice          = minetest.get_content_id("default:ice")
-local c_tree         = minetest.get_content_id("default:tree")
-local c_leaves       = minetest.get_content_id("default:leaves")
-local c_apple        = minetest.get_content_id("default:apple")
-local c_jungletree   = minetest.get_content_id("default:jungletree")
-local c_jungleleaves = minetest.get_content_id("default:jungleleaves")
-local c_pinetree     = minetest.get_content_id("default:pine_tree")
-local c_pineneedles  = minetest.get_content_id("default:pine_needles")
-local c_snow         = minetest.get_content_id("default:snow")
-local c_acaciatree   = minetest.get_content_id("default:acacia_tree")
-local c_acacialeaves = minetest.get_content_id("default:acacia_leaves")
-local c_aspentree    = minetest.get_content_id("default:aspen_tree")
-local c_aspenleaves  = minetest.get_content_id("default:aspen_leaves")
-local c_meselamp     = minetest.get_content_id("default:meselamp")
+local c_stone        = minetest.get_content_id("lottitems:stone")
+local c_sastone      = minetest.get_content_id("lottitems:sandstone")
+local c_destone      = minetest.get_content_id("lottitems:red_stone")
+local c_ice          = minetest.get_content_id("lottitems:ice")
+local c_tree         = minetest.get_content_id("lottplants:oak_trunk")
+local c_leaves       = minetest.get_content_id("lottplants:oak_leaves")
+local c_apple        = minetest.get_content_id("lottitems:apple")
+local c_jungletree   = minetest.get_content_id("lottplants:beech_trunk")
+local c_jungleleaves = minetest.get_content_id("lottplants:beech_leaves")
+local c_pinetree     = minetest.get_content_id("lottplants:pine_trunk")
+local c_pineneedles  = minetest.get_content_id("lottplants:pine_needles")
+local c_snow         = minetest.get_content_id("lottitems:snow")
+local c_acaciatree   = minetest.get_content_id("lottplants:birch_trunk")
+local c_acacialeaves = minetest.get_content_id("lottplants:birch_leaves")
+local c_aspentree    = minetest.get_content_id("lottplants:holly_trunk")
+local c_aspenleaves  = minetest.get_content_id("lottplants:holly_leaves")
+local c_meselamp     = minetest.get_content_id("air")
 
 
 -- Initialise noise objects to nil
@@ -141,6 +159,7 @@ local c_meselamp     = minetest.get_content_id("default:meselamp")
 local nobj_base = nil
 local nobj_alt = nil
 local nobj_select = nil
+local nobj_select2 = nil
 local nobj_patha = nil
 local nobj_pathb = nil
 local nobj_pathc = nil
@@ -153,6 +172,7 @@ local nobj_column = nil
 local nbuf_base
 local nbuf_alt
 local nbuf_select
+local nbuf_select2
 local nbuf_patha
 local nbuf_pathb
 local nbuf_pathc
@@ -168,7 +188,7 @@ local dbuf
 -- On generated function
 
 minetest.register_on_generated(function(minp, maxp, seed)
-	if minp.y > 0 or maxp.y < 0 then
+	if minp.y > 64 or maxp.y < 0 then
 		return
 	end
 
@@ -189,6 +209,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	nobj_base   = nobj_base   or minetest.get_perlin_map(np_base,   chulens)
 	nobj_alt    = nobj_alt    or minetest.get_perlin_map(np_alt,    chulens)
 	nobj_select = nobj_select or minetest.get_perlin_map(np_select, chulens)
+	nobj_select2 = nobj_select2 or minetest.get_perlin_map(np_select2, chulens)
 	nobj_patha  = nobj_patha  or minetest.get_perlin_map(np_patha,  chulens)
 	nobj_pathb  = nobj_pathb  or minetest.get_perlin_map(np_pathb,  chulens)
 	nobj_pathc  = nobj_pathc  or minetest.get_perlin_map(np_pathc,  chulens)
@@ -198,6 +219,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	local nvals_base   = nobj_base  :get2dMap_flat(minpos, nbuf_base)
 	local nvals_alt    = nobj_alt   :get2dMap_flat(minpos, nbuf_alt)
 	local nvals_select = nobj_select:get2dMap_flat(minpos, nbuf_select)
+	local nvals_select2 = nobj_select2:get2dMap_flat(minpos, nbuf_select2)
 	local nvals_patha  = nobj_patha :get2dMap_flat(minpos, nbuf_patha)
 	local nvals_pathb  = nobj_pathb :get2dMap_flat(minpos, nbuf_pathb)
 	local nvals_pathc  = nobj_pathc :get2dMap_flat(minpos, nbuf_pathc)
@@ -227,7 +249,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 			if x >= x0 - 2 and z >= z0 - 2 then
 				local abscol = math.abs(nvals_column[ni])
-				local base = nvals_base[ni]
+				--[[local base = nvals_base[ni]
 				local alt = nvals_alt[ni]
 				local select = nvals_select[ni]
 				if base < alt then
@@ -236,8 +258,16 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local tblend = 0.5 + HSAMP * (select - 0.5)
 				tblend = math.min(math.max(tblend, 0), 1)
 				local tlevel = math.floor(base * tblend + alt * (1 - tblend))
-				local pathy = math.min(math.max(tlevel, 7), 42)
-
+				]]
+				local n_x = x + math.floor(nvals_select[ni] * border_amp) -- Biome edge noise.
+				local n_z = z + math.floor(nvals_select2[ni] * border_amp)
+				local height = lottmapgen.height(n_x, n_z - 1)
+				local pathy = math.floor(((nvals_base[ni] + 1)) *
+					(height * math.abs(math.abs(nvals_alt[ni] / (height / 20)) - 1.01)))
+					--math.min(math.max(tlevel, 7), 42)
+				if pathy < 1 then
+					pathy = 1 + math.abs(pathy)
+				end
 				if (n_patha >= 0 and n_xprepatha < 0) -- detect sign change of noise
 						or (n_patha < 0 and n_xprepatha >= 0)
 						or (n_patha >= 0 and n_zprepatha < 0)
@@ -281,7 +311,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					-- place path node brush
 					local vi = area:index(x - 2, pathy, z - 2)
 					if data[vi] ~= c_wood then
-						data[vi] = c_stairne
+						data[ vi] = c_stairne
 					end
 					for iter = 1, 3 do
 						vi = vi + 1
@@ -322,9 +352,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						data[vi] = c_stairsw
 					end
 					-- bridge understructure
-					for zz = z - 1, z + 1 do
-						local vi = area:index(x - 1, pathy - 1, zz)
-						for xx = x - 1, x + 1 do
+					for zz = z - 2, z + 2 do
+						local vi = area:index(x - 2, pathy - 1, zz)
+						for xx = x - 2, x + 2 do
 							local nodid = data[vi]
 							if nodid ~= c_stone
 									and nodid ~= c_destone
@@ -389,30 +419,15 @@ minetest.register_on_generated(function(minp, maxp, seed)
 											data[vi] = c_stone
 										end
 									end
-								elseif y <= pathy + 5 then
-									if nodid ~= c_wood
-											and nodid ~= c_stairn
-											and nodid ~= c_stairs
-											and nodid ~= c_staire
-											and nodid ~= c_stairw
-											and nodid ~= c_stairne
-											and nodid ~= c_stairnw
-											and nodid ~= c_stairse
-											and nodid ~= c_stairsw then
-										data[vi] = c_air
-									end
-								elseif nodid == c_tree
-										or nodid == c_leaves
-										or nodid == c_apple
-										or nodid == c_jungletree
-										or nodid == c_jungleleaves
-										or nodid == c_pinetree
-										or nodid == c_pineneedles
-										or nodid == c_snow
-										or nodid == c_acaciatree
-										or nodid == c_acacialeaves
-										or nodid == c_aspentree
-										or nodid == c_aspenleaves then
+								elseif nodid ~= c_wood
+										and nodid ~= c_stairn
+										and nodid ~= c_stairs
+										and nodid ~= c_staire
+										and nodid ~= c_stairw
+										and nodid ~= c_stairne
+										and nodid ~= c_stairnw
+										and nodid ~= c_stairse
+										and nodid ~= c_stairsw then
 									data[vi] = c_air
 								end
 								vi = vi + 1
@@ -437,6 +452,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 	local chugent = math.ceil((os.clock() - t1) * 1000)
 	if DEBUG then
-		print ("[pathv7] Generate chunk " .. chugent .. " ms")
+		print ("[lottpath] Generate chunk " .. chugent .. " ms")
 	end
 end)

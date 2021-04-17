@@ -1,22 +1,6 @@
-minetest.register_node("pathv7:junglewood", {
-	description = "Mod jungle wood",
-	tiles = {"default_junglewood.png"},
-	is_ground_content = false,
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-	sounds = default.node_sound_wood_defaults(),
-})
-
-minetest.register_node("pathv7:bridgewood", {
-	description = "Bridge wood",
-	tiles = {"pathv7_bridgewood.png"},
-	is_ground_content = false,
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-	sounds = default.node_sound_wood_defaults(),
-})
-
-minetest.register_node("pathv7:stairn", { -- stair rising to the north
+minetest.register_node("lottpath:stairn", { -- stair rising to the north
 	description = "Jungle wood stair N",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -28,12 +12,12 @@ minetest.register_node("pathv7:stairn", { -- stair rising to the north
 			{-0.5, 0, 0, 0.5, 0.5, 0.5},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:stairs", {
+minetest.register_node("lottpath:stairs", {
 	description = "Jungle wood stair S",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -45,12 +29,12 @@ minetest.register_node("pathv7:stairs", {
 			{-0.5, 0, -0.5, 0.5, 0.5, 0},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:staire", {
+minetest.register_node("lottpath:staire", {
 	description = "Jungle wood stair E",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -62,12 +46,12 @@ minetest.register_node("pathv7:staire", {
 			{0, 0, -0.5, 0.5, 0.5, 0.5},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:stairw", {
+minetest.register_node("lottpath:stairw", {
 	description = "Jungle wood stair W",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -79,12 +63,12 @@ minetest.register_node("pathv7:stairw", {
 			{-0.5, 0, -0.5, 0, 0.5, 0.5},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:stairne", {
+minetest.register_node("lottpath:stairne", {
 	description = "Jungle wood stair NE",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -96,12 +80,12 @@ minetest.register_node("pathv7:stairne", {
 			{0, 0, 0, 0.5, 0.5, 0.5},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:stairnw", {
+minetest.register_node("lottpath:stairnw", {
 	description = "Jungle wood stair NW",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -113,12 +97,12 @@ minetest.register_node("pathv7:stairnw", {
 			{-0.5, 0, 0, 0, 0.5, 0.5},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:stairse", {
+minetest.register_node("lottpath:stairse", {
 	description = "Jungle wood stair SE",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -130,12 +114,12 @@ minetest.register_node("pathv7:stairse", {
 			{0, 0, -0.5, 0.5, 0.5, 0},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node("pathv7:stairsw", {
+minetest.register_node("lottpath:stairsw", {
 	description = "Jungle wood stair SW",
-	tiles = {"default_junglewood.png"},
+	tiles = {"lottitems_sandstone_brick.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -147,5 +131,5 @@ minetest.register_node("pathv7:stairsw", {
 			{-0.5, 0, -0.5, 0, 0.5, 0},
 		},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	--sounds = default.node_sound_wood_defaults(),
 })

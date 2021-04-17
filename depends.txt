@@ -1,1 +1,4 @@
-default
+lottitems
+lottplants
+lottshapes
+lottmapgen
